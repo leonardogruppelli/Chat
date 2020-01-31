@@ -1,0 +1,112 @@
+.chat
+
+  &__message
+    margin-bottom 50px
+
+    &:last-of-type
+      margin-bottom 30px
+
+  .q-message
+    max-width 80%
+    position relative
+
+  .q-message-avatar
+    width 36px
+    height 36px
+    min-width 36px
+
+  .q-message-text
+    padding 24px
+
+    &:before
+      display none
+
+    .q-message-text-content
+      color #d3d3fa
+
+  .q-message-stamp
+    margin-top 10px
+    position absolute
+    top 100%
+    color $accent
+
+    &:before
+      content ''
+      width 2px
+      height 100%
+      background-color $info
+      position absolute
+      top 50%
+      transform translateY(-50%)
+
+  .q-message-received
+    margin-right auto
+    text-align left
+
+    .q-message-text
+      float left
+      clear left
+      background-color $tertiary
+      border-radius 0 20px 20px 0
+
+      &:first-of-type
+        border-radius 20px 20px 20px 0
+
+      &:last-of-type
+        border-radius 0 20px 20px 20px
+
+      &:only-child
+        border-radius 20px
+
+    .q-message-stamp
+      left 20px
+
+      &:before
+        left -20px
+
+  .q-message-sent
+    margin-left auto
+    text-align right
+
+    .q-message-text
+      float right
+      clear right
+      background-color $quaternary
+      border-radius 20px 0 0 20px
+
+      &:first-of-type
+        border-radius 20px 20px 0 20px
+
+      &:last-of-type
+        border-radius 20px 0 20px 20px
+
+      &:only-child
+        border-radius 20px
+
+    .q-message-stamp
+      right 20px
+
+      &:before
+        right -20px
+
+  .q-field--outlined
+    
+    .q-field__control
+      
+      input
+        padding 16px 12px
+        color $accent
+      
+      &:before
+        border 1px solid $dark
+
+      &:after
+        border 1px solid transparent
+
+  .q-field--focused
+
+    .q-field__control
+
+      &:after
+        border-color $accent
+        border-width 1px

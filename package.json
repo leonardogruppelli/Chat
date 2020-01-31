@@ -1,0 +1,41 @@
+{
+  "name": "chat",
+  "version": "0.0.1",
+  "description": "Chat App",
+  "productName": "Chat",
+  "cordovaId": "org.cordova.chat",
+  "capacitorId": "",
+  "author": "Leonardo Gruppelli <leonardo.gruppelli@prodigious.com>",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "start": "quasar start",
+    "android": "quasar dev -m cordova -T android --ide",
+    "database": "mongod --dbpath database",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.2",
+    "quasar": "^1.0.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0",
+    "@quasar/quasar-app-extension-dotenv": "^1.0.0"
+  },
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ]
+}
