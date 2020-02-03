@@ -35,4 +35,5 @@ yarn-error.log*
 *.sln
 
 # Database files
-server/database
+server/database/*
+!server/database/.gitkeep
