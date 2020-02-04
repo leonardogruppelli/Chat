@@ -1,6 +1,6 @@
 module.exports = function(ctx) {
   return {
-    boot: ['guard'],
+    boot: ['guard', 'socket'],
 
     css: ['app.styl'],
 
@@ -12,7 +12,7 @@ module.exports = function(ctx) {
       all: 'auto',
       components: [],
       directives: [],
-      plugins: []
+      plugins: ['Notify']
     },
 
     supportIE: false,

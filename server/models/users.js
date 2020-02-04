@@ -20,6 +20,8 @@ module.exports = {
     try {
       const result = await collection.insertOne(query)
 
+      assert.equal(1, result.result.n)
+
       callback(result)
     } catch (error) {
       assert.equal(error, null)
@@ -43,14 +45,8 @@ module.exports = {
   find: async (database, query, callback) => {
     const collection = database.collection('users')
 
-    const projection = {
-      projection: {
-        password: 0
-      }
-    }
-
     try {
-      const user = await collection.findOne(query, projection)
+      const user = await collection.findOne(query.where, query.projection)
 
       callback(user ? user : null)
     } catch (error) {

@@ -14,7 +14,9 @@ const client = new Mongo(url, {
   useUnifiedTopology: true
 })
 const assert = require('assert')
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+  pingTimeout: 30000
+})
 const users = []
 
 server.listen(port, () => {
@@ -32,7 +34,13 @@ app.use(parser.urlencoded({ extended: false }))
 app.use(parser.json())
 
 app.post('/login', (req, res) => {
-  const query = req.body
+  const query = {
+    where: req.body,
+    projection: {
+      password: 0
+    }
+  }
+
   const find = require('./models/users').find
 
   const db = client.db(database)
@@ -55,6 +63,19 @@ app.post('/register', (req, res) => {
   const db = client.db(database)
 
   create(db, query, result => {
+    if (result) {
+      const data = result.ops[0]
+
+      const user = {
+        _id: data._id,
+        name: data.name,
+        email: data.email,
+        online: data.online
+      }
+
+      io.emit('registered', user)
+    }
+
     res.status(200).send(result)
   })
 })
@@ -161,10 +182,10 @@ io.on('connection', socket => {
 
     socket.emit('message', message)
 
-    const index = users.findIndex(item => item.id == message.to)
+    const user = users.find(item => item.id == message.to)
 
-    if (index >= 0) {
-      io.to(users[index].socket.id).emit('message', message)
+    if (user) {
+      socket.broadcast.to(user.socket.id).emit('message', message)
     }
 
     const query = {
@@ -201,9 +222,7 @@ io.on('connection', socket => {
     const db = client.db(database)
 
     send(db, query, result => {
-      if (result) {
-        console.log('message sent: ', result)
-      }
+      
     })
   })
 
@@ -234,26 +253,5 @@ io.on('connection', socket => {
         }
       })
     }
-
-    // if (socket.room) {
-    //   var room = socket.room;
-    //   io.to(room).emit('leave', socket.id);
-    //   socket.leave(room);
-    // }
   })
-
-  // socket.on('join', function(name, callback){
-  //   console.log('join', name);
-  //   var socketIds = socketIdsInRoom(name);
-  //   callback(socketIds);
-  //   socket.join(name);
-  //   socket.room = name;
-  // });
-
-  // socket.on('exchange', function(data){
-  //   console.log('exchange', data);
-  //   data.from = socket.id;
-  //   var to = io.sockets.connected[data.to];
-  //   to.emit('exchange', data);
-  // });
 })

@@ -1,20 +1,36 @@
 .auth
-  display flex
-  flex-direction column
 
-  &__intro
-    flex 4
-    align-items flex-end
-    justify-content center
-
-    .q-tab__label
-      font-weight 300
+  &__logo
+    width 50%
+    height auto
+    margin 20px
 
   &__panel
-    flex 4
-    margin-top -20px
-    border-top-left-radius 20px
-    border-top-right-radius 20px
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background-color $secondary
 
-    .q-field__label
-      font-weight 300
+    .q-field
+    
+      .q-field__control
+        
+        input
+          color $accent
+        
+        &:before
+          border-color $dark
+
+        &:after
+          height 1px
+          background-color $info
+
+      .q-field__label
+        font-weight 300
+        color $quinary
+        
+  &__tab
+
+    .q-btn__wrapper
+      padding 0 2px 3px

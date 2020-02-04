@@ -1,10 +1,9 @@
 <template>
-  <q-page ref="page" class="chat bg-secondary">
+  <q-page ref="page" class="chat flex column justify-end no-wrap bg-secondary">
     <div v-if="loading" class="column col flex-center">
       <q-spinner color="info" size="5em" :thickness="1" />
     </div>
-
-    <div v-else class="q-pa-md justify-end">
+    <div v-else class="q-pa-md">
       <div v-for="message in messages" :key="message._id" class="chat__message">
         <q-chat-message
           v-if="sent(message.from)"
@@ -44,6 +43,7 @@
           </template>
         </q-input>
       </q-form>
+      {{ counter }}
     </q-footer>
   </q-page>
 </template>
@@ -59,17 +59,21 @@ export default {
       user: this.$route.params.user,
       message: null,
       messages: [],
-      loading: true
+      loading: true,
+      counter: 0
     }
   },
   computed: {
     ...mapGetters(['id', 'name'])
   },
-  // watch: {
-  //   messages() {
-  //     return this.scroll()
-  //   }
-  // },
+  watch: {
+    messages: {
+      deep: true,
+      handler() {
+        this.scroll()
+      }
+    }
+  },
   methods: {
     send() {
       if (!this.message) {
@@ -84,7 +88,8 @@ export default {
         at: this.time()
       }
 
-      const last = this.messages[this.messages.length - 1]
+      const total = this.messages.length - 1
+      const last = this.messages[total]
 
       if (
         last &&
@@ -128,16 +133,15 @@ export default {
 
       return Math.abs(Math.round(difference))
     },
-    // scroll() {
-    //   // const height = this.$refs.page.$el
-
-    //   console.log(document.body.scrollHeight)
-
-    //   // window.scrollTo(0, height)
-    //   window.scrollTo(0, document.body.scrollHeight)
-    // },
     sent(from) {
       return from == this.name
+    },
+    scroll() {
+      this.$nextTick(() => {
+        const height = this.$refs.page.$el.scrollHeight
+
+        window.scrollTo(0, height)
+      })
     }
   },
   async created() {
@@ -165,13 +169,19 @@ export default {
       const total = this.messages.length - 1
       const last = this.messages[total]
 
+      // console.log('message', message)
+      // console.log('last', last)
+      // this.counter = this.counter + 1
+
       if (
         last &&
         message.from == last.from &&
         this.difference(last.at, message.at) <= 1
       ) {
-        last.message.push(message.message)
+        last.message.push(message.message[0])
         last.at = message.at
+        console.log('it gets here')
+        this.counter = this.counter + 1
       } else {
         this.messages.push(message)
       }

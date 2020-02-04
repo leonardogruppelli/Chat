@@ -13,11 +13,18 @@ export default () => {
       login(state, user) {
         state.user = user
         state.logged = true
+      },
+      logout(state) {
+        state.user = []
+        state.logged = false
       }
     },
     actions: {
       LOGIN({ commit }, user) {
         commit('login', user)
+      },
+      LOGOUT({ commit }) {
+        commit('logout')
       }
     },
     getters: {

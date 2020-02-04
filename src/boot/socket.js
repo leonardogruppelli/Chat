@@ -1,5 +1,7 @@
 import io from 'socket.io-client'
 
 export default ({ Vue }) => {
-  Vue.prototype.$socket = io('https://d53631ab.ngrok.io')
+  Vue.prototype.$socket = io(process.env.HOST, {
+    reconnection: false
+  })
 }

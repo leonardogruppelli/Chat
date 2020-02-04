@@ -76,14 +76,16 @@ export default {
         id: this.id
       })
 
-      console.log(data)
-
       this.users = data
     } catch (error) {
       console.log(error)
     } finally {
       this.loading = false
     }
+
+    this.$socket.on('registered', user => {
+      this.users.push(user)
+    })
 
     this.$socket.on('joined', user => {
       const index = this.users.findIndex(item => item._id == user)
