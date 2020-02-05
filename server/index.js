@@ -177,6 +177,14 @@ io.on('connection', socket => {
     })
   })
 
+  socket.on('typing', (to, from, typing) => {
+    const user = users.find(item => item.id == to)
+
+    if (user) {
+      socket.broadcast.to(user.socket.id).emit('typing', from, typing)
+    }
+  })
+
   socket.on('message', (room, message) => {
     message._id = ObjectId()
 
@@ -221,9 +229,36 @@ io.on('connection', socket => {
 
     const db = client.db(database)
 
-    send(db, query, result => {
-      
-    })
+    send(db, query, result => {})
+  })
+
+  socket.on('left', () => {
+    console.log('user disconnected', socket.id)
+
+    const user = users.find(item => item.socket.id == socket.id)
+
+    if (user) {
+      const query = {
+        where: {
+          _id: ObjectId(user.id)
+        },
+        set: {
+          $set: { online: false }
+        }
+      }
+
+      const status = require('./models/users').status
+
+      const db = client.db(database)
+
+      status(db, query, result => {
+        if (result) {
+          io.emit('left', user.id)
+          const index = users.findIndex(item => item.socket.id == socket.id)
+          users.splice(index, 1)
+        }
+      })
+    }
   })
 
   socket.on('disconnect', () => {

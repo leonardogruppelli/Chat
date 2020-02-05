@@ -9,18 +9,25 @@
           v-if="sent(message.from)"
           :text="message.message"
           :stamp="message.at"
-          :sent="true"
-          :text-sanitize="true"
+          sent
+          text-sanitize
         />
         <q-chat-message
           v-else
           avatar="https://cdn.quasar.dev/img/avatar5.jpg"
           :text="message.message"
           :stamp="message.at"
-          :sent="false"
-          :text-sanitize="true"
+          text-sanitize
         />
       </div>
+
+      <q-chat-message
+        v-if="receiving"
+        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+        text-sanitize
+      >
+        <q-spinner-dots  />
+      </q-chat-message>
     </div>
 
     <q-footer class="q-pa-md">
@@ -43,12 +50,13 @@
           </template>
         </q-input>
       </q-form>
-      {{ counter }}
     </q-footer>
   </q-page>
 </template>
 
 <script>
+import { scroll } from 'quasar'
+const { getScrollTarget, getScrollHeight, setScrollPosition } = scroll
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 
@@ -58,15 +66,22 @@ export default {
       room: null,
       user: this.$route.params.user,
       message: null,
+      typing: false,
+      receiving: false,
       messages: [],
-      loading: true,
-      counter: 0
+      loading: true
     }
   },
   computed: {
     ...mapGetters(['id', 'name'])
   },
   watch: {
+    message() {
+      this.typing = !!this.message
+    },
+    typing() {
+      this.$socket.emit('typing', this.user, this.id, this.typing)
+    },
     messages: {
       deep: true,
       handler() {
@@ -138,9 +153,10 @@ export default {
     },
     scroll() {
       this.$nextTick(() => {
-        const height = this.$refs.page.$el.scrollHeight
+        const target = getScrollTarget(this.$refs.page.$el)
+        const height = getScrollHeight(target)
 
-        window.scrollTo(0, height)
+        setScrollPosition(target, height)
       })
     }
   },
@@ -165,13 +181,15 @@ export default {
       this.loading = false
     }
 
+    this.$socket.on('typing', (from, typing) => {
+      if (from == this.user) {
+        this.receiving = typing
+      }
+    })
+
     this.$socket.on('message', message => {
       const total = this.messages.length - 1
       const last = this.messages[total]
-
-      // console.log('message', message)
-      // console.log('last', last)
-      // this.counter = this.counter + 1
 
       if (
         last &&
@@ -180,12 +198,17 @@ export default {
       ) {
         last.message.push(message.message[0])
         last.at = message.at
-        console.log('it gets here')
-        this.counter = this.counter + 1
       } else {
         this.messages.push(message)
       }
     })
+  },
+  activated() {
+    this.scroll()
   }
+  // destroyed() {
+  //   console.log('component destroyed')
+  //   this.$socket.off('message')
+  // }
 }
 </script>

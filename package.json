@@ -13,7 +13,8 @@
     "start": "quasar start",
     "android": "quasar dev -m cordova -T android --ide",
     "database": "mongod --dbpath database",
-    "test": "echo \"No test specified\" && exit 0"
+    "server": "node server",
+    "host": "ngrok http 4000"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

@@ -33,6 +33,7 @@ export default {
     ...mapActions(['LOGOUT']),
     logout() {
       this.LOGOUT()
+      this.$socket.emit('left')
       this.$router.push('/auth')
     }
   }

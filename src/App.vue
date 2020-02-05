@@ -1,5 +1,7 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <keep-alive>
+      <router-view :key="$route.path" />
+    </keep-alive>
   </div>
 </template>

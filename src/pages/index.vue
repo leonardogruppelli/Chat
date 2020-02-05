@@ -1,31 +1,17 @@
 <template>
   <q-page class="flex column bg-secondary">
-    <div v-if="loading" class="q-pa-sm">
-      <q-item v-for="index in 5" :key="index">
-        <q-item-section avatar>
-          <q-skeleton type="circle" size="40px" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>
-            <q-skeleton type="text" width="40%" />
-          </q-item-label>
-          <q-item-label caption>
-            <q-skeleton type="text" width="60%" />
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <q-skeleton size="22px" />
-        </q-item-section>
-      </q-item>
+    <div v-if="loading" class="column col flex-center">
+      <q-spinner color="info" size="5em" :thickness="1" />
     </div>
 
     <q-list v-else class="q-pa-sm">
       <q-item
         v-for="user in users"
         :key="user._id"
-        :to="{ path: `/chat/${user._id}?name=${user.name}&online=${user.online}`, exact: true }"
+        :to="{
+          path: `/chat/${user._id}?name=${user.name}&online=${user.online}`,
+          exact: true
+        }"
         class="q-my-sm"
         exact
         clickable
@@ -39,11 +25,17 @@
 
         <q-item-section>
           <q-item-label class="text-white">{{ user.name }}</q-item-label>
-          <q-item-label caption lines="1" class="text-accent">{{ user.email }}</q-item-label>
+          <q-item-label caption lines="1" class="text-accent">{{
+            user.email
+          }}</q-item-label>
         </q-item-section>
 
         <q-item-section side>
-          <q-icon name="ti-comment" size="xs" :color="user.online ? 'info' : 'white'" />
+          <q-icon
+            name="ti-comment"
+            size="xs"
+            :color="user.online ? 'info' : 'white'"
+          />
         </q-item-section>
       </q-item>
     </q-list>
@@ -88,6 +80,7 @@ export default {
     })
 
     this.$socket.on('joined', user => {
+      console.log('user joined: ', user)
       const index = this.users.findIndex(item => item._id == user)
 
       if (index >= 0) {
@@ -96,9 +89,10 @@ export default {
     })
 
     this.$socket.on('left', user => {
+      console.log('user left: ', user)
       const index = this.users.findIndex(item => item._id == user)
 
-      if (index) {
+      if (index >= 0) {
         this.users[index].online = false
       }
     })

@@ -72,6 +72,9 @@ export default {
 
           this.$socket.emit('join', data._id)
 
+          this.form.email = null
+          this.form.password = null
+
           this.$router.push('/')
         } else {
           this.$q.notify({
@@ -81,11 +84,6 @@ export default {
             position: 'top',
             timeout: 5000
           })
-
-          this.form.email = null
-          this.form.password = null
-
-          this.loading = false
         }
       } catch (error) {
         this.$q.notify({
@@ -95,7 +93,7 @@ export default {
           position: 'top',
           timeout: 5000
         })
-
+      } finally {
         this.loading = false
       }
     }

@@ -4,8 +4,13 @@
       <q-toolbar class="q-pa-sm">
         <q-btn v-go-back.single round flat icon="ti-arrow-left" />
 
-        <q-toolbar-title>
-          <q-item>
+        <q-toolbar-title class="q-pa-none">
+          <q-item class="q-px-sm">
+            <q-item-section avatar>
+              <q-avatar color="accent" text-color="white">
+                {{ user.name.charAt(0).toLocaleUpperCase() }}
+              </q-avatar>
+            </q-item-section>
             <q-item-section>
               <q-item-label class="text-subtitle1 text-white">{{
                 user.name
@@ -21,7 +26,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -48,14 +53,12 @@ export default {
   },
   created() {
     this.$socket.on('joined', user => {
-      console.log('user joined: ', user)
       if (user == this.user.id) {
         this.user.online = true
       }
     })
 
     this.$socket.on('left', user => {
-      console.log('user left: ', user)
       if (user == this.user.id) {
         this.user.online = false
       }

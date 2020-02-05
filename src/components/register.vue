@@ -84,7 +84,6 @@ export default {
           this.$emit('registered')
         }
       } catch (error) {
-        console.log(error)
         this.$q.notify({
           color: 'negative',
           textColor: 'white',
