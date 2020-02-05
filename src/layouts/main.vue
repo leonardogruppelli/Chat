@@ -1,8 +1,22 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <q-toolbar class="q-pa-md">
-        <q-toolbar-title>Chat</q-toolbar-title>
+      <q-toolbar class="q-pa-sm">
+        <q-toolbar-title class="q-pa-none">
+          <q-item class="q-px-sm">
+            <q-item-section avatar>
+              <q-avatar color="accent" text-color="white">
+                {{ user.name.charAt(0).toLocaleUpperCase() }}
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-subtitle1 text-white">{{
+                user.name
+              }}</q-item-label>
+              <q-item-label caption lines="1" class="text-info">morador</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-toolbar-title>
 
         <q-btn flat round icon="ti-more">
           <q-menu>
@@ -27,7 +41,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['id'])
+    ...mapGetters(['user'])
   },
   methods: {
     ...mapActions(['LOGOUT']),

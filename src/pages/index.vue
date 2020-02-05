@@ -4,7 +4,7 @@
       <q-spinner color="info" size="5em" :thickness="1" />
     </div>
 
-    <q-list v-else class="q-pa-sm">
+    <q-list v-else class="q-pa-none">
       <q-item
         v-for="user in users"
         :key="user._id"
