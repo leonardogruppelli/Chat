@@ -26,7 +26,7 @@
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
         text-sanitize
       >
-        <q-spinner-dots  />
+        <q-spinner-dots />
       </q-chat-message>
     </div>
 
@@ -83,10 +83,10 @@ export default {
       this.$socket.emit('typing', this.user, this.id, this.typing)
     },
     messages: {
-      deep: true,
-      handler() {
-        this.scroll()
-      }
+      handler(value, old) {
+        this.scroll(old)
+      },
+      deep: true
     }
   },
   methods: {
@@ -151,12 +151,23 @@ export default {
     sent(from) {
       return from == this.name
     },
-    scroll() {
+    scroll(old) {
+      const target = getScrollTarget(this.$refs.page.$el)
+      const current = getScrollHeight(target)
+
       this.$nextTick(() => {
-        const target = getScrollTarget(this.$refs.page.$el)
         const height = getScrollHeight(target)
 
-        setScrollPosition(target, height)
+        if (!old || !old.length) {
+          setScrollPosition(target, height)
+          return
+        }
+
+        const distance = window.innerHeight + window.pageYOffset + 100
+
+        if (distance >= current) {
+          setScrollPosition(target, height)
+        }
       })
     }
   },
@@ -184,22 +195,28 @@ export default {
     this.$socket.on('typing', (from, typing) => {
       if (from == this.user) {
         this.receiving = typing
+
+        if (typing) {
+          this.scroll()
+        }
       }
     })
 
-    this.$socket.on('message', message => {
-      const total = this.messages.length - 1
-      const last = this.messages[total]
+    this.$socket.on('message', (room, message) => {
+      if (room == this.room) {
+        const total = this.messages.length - 1
+        const last = this.messages[total]
 
-      if (
-        last &&
-        message.from == last.from &&
-        this.difference(last.at, message.at) <= 1
-      ) {
-        last.message.push(message.message[0])
-        last.at = message.at
-      } else {
-        this.messages.push(message)
+        if (
+          last &&
+          message.from == last.from &&
+          this.difference(last.at, message.at) <= 1
+        ) {
+          last.message.push(message.message[0])
+          last.at = message.at
+        } else {
+          this.messages.push(message)
+        }
       }
     })
   },

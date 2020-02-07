@@ -13,7 +13,7 @@
               <q-item-label class="text-subtitle1 text-white">{{
                 user.name
               }}</q-item-label>
-              <q-item-label caption lines="1" class="text-info">morador</q-item-label>
+              <q-item-label caption lines="1" class="text-info text-weight-light">MORADOR</q-item-label>
             </q-item-section>
           </q-item>
         </q-toolbar-title>

@@ -188,12 +188,12 @@ io.on('connection', socket => {
   socket.on('message', (room, message) => {
     message._id = ObjectId()
 
-    socket.emit('message', message)
+    socket.emit('message', room, message)
 
     const user = users.find(item => item.id == message.to)
 
     if (user) {
-      socket.broadcast.to(user.socket.id).emit('message', message)
+      socket.broadcast.to(user.socket.id).emit('message', room, message)
     }
 
     const query = {

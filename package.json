@@ -12,7 +12,7 @@
     "build": "quasar build",
     "start": "quasar start",
     "android": "quasar dev -m cordova -T android --ide",
-    "database": "mongod --dbpath database",
+    "database": "mongod --dbpath server/database",
     "server": "node server",
     "host": "ngrok http 4000"
   },
