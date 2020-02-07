@@ -13,10 +13,17 @@
               <q-item-label class="text-subtitle1 text-white">{{
                 user.name
               }}</q-item-label>
-              <q-item-label caption lines="1" class="text-info text-weight-light">MORADOR</q-item-label>
+              <q-item-label
+                caption
+                lines="1"
+                class="text-info text-weight-light"
+                >MORADOR</q-item-label
+              >
             </q-item-section>
           </q-item>
         </q-toolbar-title>
+
+        <q-btn @click="modal = true" flat round icon="ti-alert" />
 
         <q-btn flat round icon="ti-more">
           <q-menu>
@@ -30,6 +37,8 @@
       </q-toolbar>
     </q-header>
 
+    <occurrence :active="modal" @close="modal = false" />
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -37,9 +46,18 @@
 </template>
 
 <script>
+import Occurrence from '../components/occurrence'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  components: {
+    Occurrence
+  },
+  data() {
+    return {
+      modal: false
+    }
+  },
   computed: {
     ...mapGetters(['user'])
   },

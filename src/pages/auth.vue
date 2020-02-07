@@ -67,14 +67,14 @@ import Login from '../components/login'
 import Register from '../components/register'
 
 export default {
+  components: {
+    Login,
+    Register
+  },
   data() {
     return {
       tab: 'login'
     }
-  },
-  components: {
-    Login,
-    Register
   }
 }
 </script>
