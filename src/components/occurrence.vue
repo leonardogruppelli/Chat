@@ -75,6 +75,8 @@
               color="primary"
               filled
               autogrow
+              label="Occurrence"
+              :rules="[val => !!val || 'Field is required']"
             />
 
             <q-stepper-navigation>
