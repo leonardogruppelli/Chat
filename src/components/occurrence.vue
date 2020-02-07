@@ -70,6 +70,7 @@
             :done="step > 3"
           >
             <q-input
+              ref="occurrence"
               v-model="occurrence"
               bg-color="white"
               color="primary"
@@ -97,7 +98,7 @@
           push
           color="info"
           text-color="white"
-          @click="step = 1"
+          @click="clear"
           class="float-right q-ma-md"
         />
       </q-card-section>
@@ -120,6 +121,13 @@ export default {
   watch: {
     active() {
       this.dialog = this.active
+    }
+  },
+  methods: {
+    clear() {
+      this.occurrence = null
+      this.$refs.occurrence.resetValidation()
+      this.step = 1
     }
   }
 }
