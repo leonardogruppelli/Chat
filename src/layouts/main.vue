@@ -13,12 +13,12 @@
               <q-item-label class="text-subtitle1 text-white">{{
                 user.name
               }}</q-item-label>
-              <q-item-label
+              <!-- <q-item-label
                 caption
                 lines="1"
                 class="text-info text-weight-light"
                 >MORADOR</q-item-label
-              >
+              > -->
             </q-item-section>
           </q-item>
         </q-toolbar-title>
@@ -27,11 +27,52 @@
 
         <q-btn flat round icon="ti-more">
           <q-menu>
-            <q-list>
-              <q-item @click="logout" clickable v-close-popup>
-                <q-item-section>Log Out</q-item-section>
-              </q-item>
-            </q-list>
+            <div class="row no-wrap q-pa-md">
+              <div class="items-center">
+                <q-avatar size="60px">
+                  <img src="https://cdn.quasar.dev/img/avatar4.jpg" />
+                </q-avatar>
+              </div>
+
+              <q-separator vertical inset class="q-mx-lg" />
+
+              <div class="column">
+                <div class="text-subtitle1 text-right q-mb-xs">John Doe</div>
+
+                <q-btn
+                  color="white"
+                  text-color="accent"
+                  label="settings"
+                  class="text-weight-light"
+                  rounded
+                  no-caps
+                >
+                  <q-icon name="ti-settings" color="accent" size="1em" right />
+                </q-btn>
+
+                <div class="row">
+                  <q-separator class="q-my-md" />
+                </div>
+
+                <q-btn
+                  @click="logout"
+                  color="white"
+                  text-color="negative"
+                  label="logout"
+                  class="text-weight-light"
+                  rounded
+                  no-caps
+                  v-close-popup
+                >
+                  <q-icon
+                    name="ti-shift-right"
+                    color="negative"
+                    size="1em"
+                    right
+                  />
+                </q-btn>
+              </div>
+            </div>
           </q-menu>
         </q-btn>
       </q-toolbar>
@@ -46,7 +87,7 @@
 </template>
 
 <script>
-import Occurrence from '../components/occurrence'
+import Occurrence from 'components/occurrence'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

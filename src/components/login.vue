@@ -1,35 +1,54 @@
 <template>
   <div>
-    <q-form @submit="login">
-      <q-input v-model="form.email" type="email" class="q-mb-md" label="e-mail">
-        <template v-slot:prepend>
-          <q-icon name="ti-email" size="xs" color="info" />
-        </template>
-      </q-input>
+    <validation-observer ref="observer" v-slot="{ passes }">
+      <form @submit="passes(login)">
+        <validation-provider
+          rules="required|email"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.email"
+            label="e-mail"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-email" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
 
-      <q-input
-        v-model="form.password"
-        type="password"
-        class="q-mb-lg"
-        label="password"
-      >
-        <template v-slot:prepend>
-          <q-icon name="ti-lock" size="xs" color="info" />
-        </template>
-      </q-input>
+        <validation-provider
+          rules="required"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.password"
+            type="password"
+            class="q-mb-md"
+            label="password"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-lock" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
 
-      <q-btn
-        type="submit"
-        color="info"
-        label="Log In"
-        :loading="loading"
-        class="full-width q-pa-sm"
-      >
-        <template v-slot:loading>
-          <q-spinner color="white" :thickness="3" />
-        </template>
-      </q-btn>
-    </q-form>
+        <q-btn
+          type="submit"
+          color="info"
+          label="Log In"
+          :loading="loading"
+          class="full-width q-pa-sm"
+        >
+          <template v-slot:loading>
+            <q-spinner color="white" :thickness="3" />
+          </template>
+        </q-btn>
+      </form>
+    </validation-observer>
 
     <q-btn
       flat
@@ -43,10 +62,15 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapActions } from 'vuex'
 import axios from 'axios'
 
 export default {
+  components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   data() {
     return {
       form: {
@@ -72,8 +96,7 @@ export default {
 
           this.$socket.emit('join', data._id)
 
-          this.form.email = null
-          this.form.password = null
+          this.reset()
 
           this.$router.push('/')
         } else {
@@ -96,6 +119,15 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    reset() {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = null
+      })
+
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset()
+      })
     }
   }
 }

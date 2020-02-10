@@ -1,31 +1,40 @@
+import guard from 'layouts/guard'
+import main from 'layouts/main'
+import chat from 'layouts/chat'
+
+import auth from 'pages/auth'
+import users from 'pages/index'
+import room from 'pages/chat/_user'
+import error from 'pages/error'
+
 const routes = [
   {
     path: '/auth',
-    component: () => import('layouts/guard'),
+    component: guard,
     children: [
       {
         path: '/auth',
-        component: () => import('pages/auth')
+        component: auth
       }
     ]
   },
   {
     path: '/',
-    component: () => import('layouts/main'),
+    component: main,
     children: [
       {
         path: '/',
-        component: () => import('pages/index')
+        component: users
       }
     ]
   },
   {
     path: '/chat/:user',
-    component: () => import('layouts/chat'),
+    component: chat,
     children: [
       {
         path: '/chat/:user',
-        component: () => import('pages/chat/_user')
+        component: room
       }
     ]
   }
@@ -34,7 +43,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/error')
+    component: error
   })
 }
 

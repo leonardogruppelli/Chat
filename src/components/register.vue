@@ -1,59 +1,109 @@
 <template>
   <div>
-    <q-form @submit="register">
-      <q-input v-model="form.name" class="q-mb-md" label="name">
-        <template v-slot:prepend>
-          <q-icon name="ti-user" size="xs" color="info" />
-        </template>
-      </q-input>
+    <validation-observer ref="observer" v-slot="{ passes }">
+      <!-- <q-form @submit="register"> -->
+      <form @submit="passes(register)">
+        <validation-provider
+          rules="required"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.name"
+            label="name"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-user" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
 
-      <q-input
-        v-model="form.email"
-        type="email"
-        class="q-mb-md"
-        label="e-mail"
-      >
-        <template v-slot:prepend>
-          <q-icon name="ti-email" size="xs" color="info" />
-        </template>
-      </q-input>
+        <validation-provider
+          rules="required|email"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.email"
+            label="e-mail"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-email" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
 
-      <q-input
-        v-model="form.password"
-        type="password"
-        class="q-mb-lg"
-        label="password"
-      >
-        <template v-slot:prepend>
-          <q-icon name="ti-lock" size="xs" color="info" />
-        </template>
-      </q-input>
+        <validation-provider
+          rules="required|confirmed:confirmation"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.password"
+            type="password"
+            label="password"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-lock" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
 
-      <q-btn
-        type="submit"
-        color="info"
-        label="Register"
-        :loading="loading"
-        class="full-width q-pa-sm"
-      >
-        <template v-slot:loading>
-          <q-spinner color="white" :thickness="3" />
-        </template>
-      </q-btn>
-    </q-form>
+        <validation-provider
+          name="confirmation"
+          rules="required"
+          v-slot="{ errors, invalid, validated }"
+        >
+          <q-input
+            v-model="form.confirm"
+            type="password"
+            class="q-mb-lg"
+            label="confirm password"
+            :error="invalid && validated"
+            :error-message="errors[0]"
+          >
+            <template v-slot:prepend>
+              <q-icon name="ti-lock" size="xs" color="info" />
+            </template>
+          </q-input>
+        </validation-provider>
+
+        <q-btn
+          type="submit"
+          color="info"
+          label="Register"
+          :loading="loading"
+          class="full-width q-pa-sm"
+        >
+          <template v-slot:loading>
+            <q-spinner color="white" :thickness="3" />
+          </template>
+        </q-btn>
+      </form>
+      <!-- </q-form> -->
+    </validation-observer>
   </div>
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import axios from 'axios'
 
 export default {
+  components: {
+    ValidationObserver,
+    ValidationProvider
+  },
   data() {
     return {
       form: {
         name: null,
         email: null,
-        password: null
+        password: null,
+        confirm: null
       },
       loading: false
     }
@@ -69,9 +119,7 @@ export default {
         )
 
         if (data) {
-          this.form.name = null
-          this.form.email = null
-          this.form.password = null
+          this.reset()
 
           this.$q.notify({
             color: 'positive',
@@ -94,6 +142,15 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    reset() {
+      Object.keys(this.form).forEach(key => {
+        this.form[key] = null
+      })
+
+      requestAnimationFrame(() => {
+        this.$refs.observer.reset()
+      })
     }
   }
 }

@@ -1,6 +1,6 @@
 module.exports = function(ctx) {
   return {
-    boot: ['guard', 'socket'],
+    boot: ['guard', 'socket', 'validation'],
 
     css: ['app.styl'],
 
