@@ -8,7 +8,10 @@
       transition-next="jump-left"
       class="auth__panel"
     >
-      <q-tab-panel name="login" class="q-px-lg bg-secondary">
+      <q-tab-panel
+        name="login"
+        class="q-px-lg bg-secondary"
+      >
         <div class="text-center">
           <q-img
             class="auth__logo"
@@ -19,7 +22,10 @@
         <login />
       </q-tab-panel>
 
-      <q-tab-panel name="register" class="q-py-xl q-px-lg">
+      <q-tab-panel
+        name="register"
+        class="q-py-xl q-px-lg"
+      >
         <div class="text-center">
           <q-img
             class="auth__logo"
@@ -47,7 +53,10 @@
       />
     </p>
 
-    <p v-else class="auth__tab text-accent text-weight-light self-center">
+    <p
+      v-else
+      class="auth__tab text-accent text-weight-light self-center"
+    >
       Already have an account?
       <q-btn
         @click="tab = 'login'"
@@ -67,14 +76,14 @@ import Login from 'components/login'
 import Register from 'components/register'
 
 export default {
-  components: {
-    Login,
-    Register
-  },
-  data() {
-    return {
-      tab: 'login'
-    }
-  }
+	components: {
+		Login,
+		Register
+	},
+	data() {
+		return {
+			tab: 'login'
+		}
+	}
 }
 </script>

@@ -1,13 +1,26 @@
 <template>
-  <q-dialog v-model="dialog" transition-show="flip-down" @hide="$emit('close')">
+  <q-dialog
+    v-model="dialog"
+    transition-show="flip-down"
+    @hide="$emit('close')"
+  >
     <q-card class="bg-info text-white q-pa-none">
       <q-bar>
-        <div class="text-weight-light">register occurrence</div>
+        <div class="text-weight-light">
+          register occurrence
+        </div>
 
         <q-space />
 
-        <q-btn dense flat v-close-popup>
-          <q-icon name="ti-close" size="xs" />
+        <q-btn
+          dense
+          flat
+          v-close-popup
+        >
+          <q-icon
+            name="ti-close"
+            size="xs"
+          />
         </q-btn>
       </q-bar>
 
@@ -32,7 +45,11 @@
             and geographical locations you want your ads to show on, and more.
 
             <q-stepper-navigation>
-              <q-btn @click="step = 2" color="info" label="Continue" />
+              <q-btn
+                @click="step = 2"
+                color="info"
+                label="Continue"
+              />
             </q-stepper-navigation>
           </q-step>
 
@@ -52,7 +69,11 @@
             />
 
             <q-stepper-navigation>
-              <q-btn @click="step = 3" color="info" label="Continue" />
+              <q-btn
+                @click="step = 3"
+                color="info"
+                label="Continue"
+              />
               <q-btn
                 flat
                 @click="step = 1"
@@ -81,7 +102,11 @@
             />
 
             <q-stepper-navigation>
-              <q-btn @click="step = 4" color="info" label="Finish" />
+              <q-btn
+                @click="step = 4"
+                color="info"
+                label="Finish"
+              />
               <q-btn
                 flat
                 @click="step = 2"
@@ -108,27 +133,34 @@
 
 <script>
 export default {
-  data() {
-    return {
-      dialog: this.active,
-      step: 1,
-      condominium: 'Azaleia',
-      condominiums: ['Azaleia', 'Alphaville', 'Barra Place', 'Porto Here'],
-      occurrence: null
-    }
-  },
-  props: ['active'],
-  watch: {
-    active() {
-      this.dialog = this.active
-    }
-  },
-  methods: {
-    clear() {
-      this.occurrence = null
-      this.$refs.occurrence.resetValidation()
-      this.step = 1
-    }
-  }
+	data() {
+		return {
+			dialog: this.active,
+			step: 1,
+			condominium: 'Azaleia',
+			condominiums: [
+				'Azaleia',
+				'Alphaville',
+				'Barra Place',
+				'Porto Here'
+			],
+			occurrence: null
+		}
+	},
+	props: [
+		'active'
+	],
+	watch: {
+		active() {
+			this.dialog = this.active
+		}
+	},
+	methods: {
+		clear() {
+			this.occurrence = null
+			this.$refs.occurrence.resetValidation()
+			this.step = 1
+		}
+	}
 }
 </script>

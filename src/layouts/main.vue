@@ -1,76 +1,111 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header>
+    <!-- <q-header>
       <q-toolbar class="q-pa-sm">
         <q-toolbar-title class="q-pa-none">
           <q-item class="q-px-sm">
-            <q-item-section avatar>
-              <q-avatar color="accent" text-color="white">
-                {{ user.name.charAt(0).toLocaleUpperCase() }}
-              </q-avatar>
-            </q-item-section>
             <q-item-section>
-              <q-item-label class="text-subtitle1 text-white">{{
-                user.name
-              }}</q-item-label>
-              <!-- <q-item-label
-                caption
-                lines="1"
-                class="text-info text-weight-light"
-                >MORADOR</q-item-label
-              > -->
+              <q-item-label
+                class="text-subtitle1 text-white"
+              >
+                Chat
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-toolbar-title>
 
-        <q-btn @click="modal = true" flat round icon="ti-alert" />
-
-        <q-btn flat round icon="ti-more">
+        <q-btn
+          flat
+          round
+          icon="ti-more"
+        >
           <q-menu>
             <div class="row no-wrap q-pa-md">
-              <div class="items-center">
+              <div class="column">
                 <q-avatar size="60px">
-                  <img src="https://cdn.quasar.dev/img/avatar4.jpg" />
+                  <img src="https://cdn.quasar.dev/img/avatar4.jpg">
                 </q-avatar>
+
+                <div class="text-subtitle1 text-weight-light q-mt-xs">
+                  John Doe
+                </div>
               </div>
 
-              <q-separator vertical inset class="q-mx-lg" />
+              <q-separator
+                vertical
+                inset
+                class="q-mx-lg"
+              />
 
               <div class="column">
-                <div class="text-subtitle1 text-right q-mb-xs">John Doe</div>
-
                 <q-btn
-                  color="white"
-                  text-color="accent"
-                  label="settings"
-                  class="text-weight-light"
+                  color="cyan"
+                  label="profile"
+                  class="text-weight-light q-mb-xs"
                   rounded
+                  dense
+                  push
                   no-caps
-                >
-                  <q-icon name="ti-settings" color="accent" size="1em" right />
-                </q-btn>
-
-                <div class="row">
-                  <q-separator class="q-my-md" />
-                </div>
-
-                <q-btn
-                  @click="logout"
-                  color="white"
-                  text-color="negative"
-                  label="logout"
-                  class="text-weight-light"
-                  rounded
-                  no-caps
-                  v-close-popup
                 >
                   <q-icon
-                    name="ti-shift-right"
-                    color="negative"
+                    name="ti-user"
                     size="1em"
                     right
                   />
                 </q-btn>
+
+                <q-btn
+                  color="accent"
+                  label="settings"
+                  class="text-weight-light q-mb-xs"
+                  rounded
+                  dense
+                  push
+                  no-caps
+                >
+                  <q-icon
+                    name="ti-settings"
+                    size="1em"
+                    right
+                  />
+                </q-btn>
+
+                <q-btn
+                  color="warning"
+                  label="occurrences"
+                  class="text-weight-light"
+                  rounded
+                  dense
+                  push
+                  no-caps
+                >
+                  <q-icon
+                    name="ti-announcement"
+                    size="1em"
+                    right
+                  />
+                </q-btn>
+
+                <div class="row">
+                  <q-separator class="q-my-md q-mx-sm" />
+                </div>
+
+                <div class="row justify-end">
+                  <q-btn
+                    @click="logout"
+                    color="negative"
+                    size="xs"
+                    class="q-pa-xs"
+                    round
+                    push
+                    v-close-popup
+                  >
+                    <q-icon
+                      name="ti-shift-right"
+                      color="white"
+                    />
+                  </q-btn>
+                </div>
               </div>
             </div>
           </q-menu>
@@ -78,37 +113,88 @@
       </q-toolbar>
     </q-header>
 
-    <occurrence :active="modal" @close="modal = false" />
+    <occurrence
+      :active="modal"
+      @close="modal = false"
+    /> -->
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer>
+      <q-tabs
+        align="justify"
+        active-color="primary"
+        indicator-color="transparent"
+        class="q-py-sm bg-white text-accent"
+      >
+        <q-route-tab
+          to="/"
+          exact
+        >
+          <q-icon
+            name="las la-home"
+            size="md"
+          />
+        </q-route-tab>
+
+        <q-route-tab
+          to="/users"
+          exact
+        >
+          <q-icon
+            name="las la-list"
+            size="md"
+          />
+        </q-route-tab>
+
+        <q-route-tab
+          to="/profile"
+          exact
+        >
+          <q-icon
+            name="las la-cog"
+            size="md"
+          />
+        </q-route-tab>
+      </q-tabs>
+    </q-footer>
   </q-layout>
 </template>
 
 <script>
-import Occurrence from 'components/occurrence'
+// import Occurrence from 'components/occurrence'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    Occurrence
-  },
-  data() {
-    return {
-      modal: false
-    }
-  },
-  computed: {
-    ...mapGetters(['user'])
-  },
-  methods: {
-    ...mapActions(['LOGOUT']),
-    logout() {
-      this.LOGOUT()
-      this.$socket.emit('left')
-      this.$router.push('/auth')
-    }
-  }
+	// components: {
+	// 	Occurrence
+	// },
+	data() {
+		return {
+			modal: false,
+			items: [
+				'opa',
+				'foo',
+				'bar'
+			]
+		}
+	},
+	computed: {
+		...mapGetters([
+			'user'
+		])
+	},
+	methods: {
+		...mapActions([
+			'LOGOUT'
+		]),
+		logout() {
+			this.LOGOUT()
+			this.$socket.emit('left')
+			this.$router.push('/auth')
+		}
+	}
 }
 </script>
