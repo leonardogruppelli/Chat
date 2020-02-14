@@ -24,6 +24,7 @@ module.exports = function(ctx) {
 			directives: [
 			],
 			plugins: [
+				'Cookies',
 				'Notify'
 			]
 		},

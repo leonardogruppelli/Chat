@@ -1,6 +1,6 @@
 <template>
   <div class="recent q-px-md">
-    <p class="text-subtitle2 q-mb-xs">
+    <p class="text-subtitle2 q-mb-sm">
       Recent conversations
     </p>
 

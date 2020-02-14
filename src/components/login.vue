@@ -4,7 +4,7 @@
       ref="observer"
       v-slot="{ passes }"
     >
-      <form @submit="passes(login)">
+      <form @submit.prevent="passes(login)">
         <validation-provider
           rules="required|email"
           v-slot="{ errors, invalid, validated }"
@@ -77,7 +77,6 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
-import { mapActions } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -95,9 +94,6 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions([
-			'LOGIN'
-		]),
 		async login() {
 			this.loading = true
 
@@ -108,12 +104,19 @@ export default {
 				)
 
 				if (data) {
-					this.LOGIN(data)
+					console.log(data)
+					this.$q.cookies.set('user', data.user, {
+						expires: '1d'
+					})
+          
+					this.$q.cookies.set('token', data.token, {
+						expires: '1d'
+					})
 
-					this.$socket.emit('join', data._id)
+					this.$socket.emit('join', data.user.id)
 
 					this.reset()
-
+            
 					this.$router.push('/')
 				} else {
 					this.$q.notify({
@@ -128,7 +131,7 @@ export default {
 				this.$q.notify({
 					color: 'negative',
 					textColor: 'white',
-					message: 'an error ocurred while logging in, try again...',
+					message: error.response,
 					position: 'top',
 					timeout: 5000
 				})

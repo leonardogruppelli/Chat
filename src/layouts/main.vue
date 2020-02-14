@@ -154,7 +154,7 @@
           exact
         >
           <q-icon
-            name="las la-cog"
+            name="las la-user"
             size="md"
           />
         </q-route-tab>
@@ -164,37 +164,18 @@
 </template>
 
 <script>
-// import Occurrence from 'components/occurrence'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-	// components: {
-	// 	Occurrence
-	// },
 	data() {
 		return {
-			modal: false,
-			items: [
-				'opa',
-				'foo',
-				'bar'
-			]
+			modal: false
 		}
 	},
 	computed: {
 		...mapGetters([
 			'user'
 		])
-	},
-	methods: {
-		...mapActions([
-			'LOGOUT'
-		]),
-		logout() {
-			this.LOGOUT()
-			this.$socket.emit('left')
-			this.$router.push('/auth')
-		}
 	}
 }
 </script>

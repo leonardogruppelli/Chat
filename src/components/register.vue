@@ -5,7 +5,7 @@
       v-slot="{ passes }"
     >
       <!-- <q-form @submit="register"> -->
-      <form @submit="passes(register)">
+      <form @submit.prevent="passes(register)">
         <validation-provider
           rules="required"
           v-slot="{ errors, invalid, validated }"
@@ -157,7 +157,7 @@ export default {
 				this.$q.notify({
 					color: 'negative',
 					textColor: 'white',
-					message: 'an error ocurred while signing up, try again...',
+					message: error.response,
 					position: 'top',
 					timeout: 5000
 				})

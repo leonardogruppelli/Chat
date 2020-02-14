@@ -1,73 +1,138 @@
 <template>
-  <q-page class="flex column bg-secondary">
+  <q-page class="flex column">
+    <div class="chat__header bg-grey-2 q-mb-md">
+      <q-toolbar class="q-pt-sm">
+        <q-item class="q-px-sm">
+          <q-item-section>
+            <q-item-label class="text-h6 text-weight-light text-primary">
+              messages
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-space />
+
+        <q-btn
+          flat
+          round
+          icon="las la-search"
+          color="primary"
+        />
+      </q-toolbar>
+
+      <q-toolbar class="q-mb-sm">
+        <q-toolbar-title>
+          <q-item class="q-px-sm">
+            <q-item-section
+              top
+              avatar
+            >
+              <q-avatar
+                size="50px"
+              >
+                <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label class="text-weight-medium">
+                {{ user.name }}
+              </q-item-label>
+              <q-item-label
+                caption
+                lines="1"
+              >
+                {{ user.email }}
+              </q-item-label>
+              <q-item-label
+                caption
+                lines="1"
+              >
+                {{ user.id }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-toolbar-title>
+      </q-toolbar>
+    </div>
+
     <div
       v-if="loading"
       class="column col flex-center"
     >
       <q-spinner
-        color="info"
+        color="primary"
         size="5em"
         :thickness="1"
       />
     </div>
-
-    <q-list
+      
+    <q-scroll-area
       v-else
-      class="q-pa-none"
+      style="height: 100%"
     >
-      <q-item
-        v-for="user in users"
-        :key="user._id"
-        :to="{
-          path: `/chat/${user._id}?name=${user.name}&online=${user.online}`,
-          exact: true
-        }"
-        class="q-my-sm"
-        exact
-        clickable
-        v-ripple
+      <q-list
+        class="q-gutter-y-sm q-px-md"
       >
-        <q-item-section avatar>
-          <q-avatar
-            color="primary"
-            text-color="white"
+        <q-item
+          v-for="user in users"
+          :key="user._id"
+          :to="{
+            path: `/chat/${user._id}?name=${user.name}&online=${user.online}`,
+            exact: true
+          }"
+          class="q-px-none"
+          exact
+          clickable
+          v-ripple
+        >
+          <q-item-section
+            top
+            avatar
           >
-            {{ user.name.charAt(0).toLocaleUpperCase() }}
-          </q-avatar>
-        </q-item-section>
+            <q-avatar
+              size="50px"
+              class="overflow-hidden"
+            >
+              <background />
+            </q-avatar>
+          </q-item-section>
 
-        <q-item-section>
-          <q-item-label class="text-white">
-            {{ user.name }}
-          </q-item-label>
-          <q-item-label
-            caption
-            lines="1"
-            class="text-accent"
+          <q-item-section>
+            <q-item-label class="text-weight-medium">
+              {{ user.name }}
+            </q-item-label>
+            <q-item-label
+              caption
+              lines="2"
+            >
+              Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section
+            side
+            top
           >
-            {{
-              user.email
-            }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <q-icon
-            name="ti-comment"
-            size="xs"
-            :color="user.online ? 'info' : 'white'"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
+            <q-item-label caption>
+              5 min ago
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-scroll-area>
   </q-page>
 </template>
 
 <script>
+import Background from 'components/background'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
+	components: {
+		Background,
+	},
 	data() {
 		return {
 			users: [
@@ -77,7 +142,8 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'id'
+			'id',
+			'user'
 		]),
 		online() {
 			return this.users.filter(item => item.online)
@@ -95,6 +161,13 @@ export default {
 			this.users = data
 		} catch (error) {
 			console.log(error)
+			this.$q.notify({
+				color: 'negative',
+				textColor: 'white',
+				message: error.response,
+				position: 'top',
+				timeout: 5000
+			})
 		} finally {
 			this.loading = false
 		}

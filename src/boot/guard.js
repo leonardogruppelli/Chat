@@ -1,18 +1,38 @@
+import { Cookies } from 'quasar'
+import axios from 'axios'
+
 export default ({ router, store }) => {
-  router.beforeEach((to, from, next) => {
-    to.matched.some(route => {
-      const logged = store.getters.logged
+	router.beforeEach((to, from, next) => {
+		to.matched.some(route => {
+			const token = Cookies.get('token')
+			const user = Cookies.get('user')
+      
+			axios.defaults.headers.common = {
+				'Authorization': `Bearer ${token}`
+			}
 
-      if (!logged && route.path != '/auth') {
-        next({
-          path: '/auth',
-          replace: true
-        })
+			store.dispatch('SET_USER', user || [
+			])
+			
+			if (!token && route.path != '/auth') {
+				next({
+					path: '/auth',
+					replace: true
+				})
 
-        return
-      }
+				return
+			}
+      
+			if (token && route.path == '/auth') {
+				next({
+					path: '/',
+					replace: true
+				})
 
-      next()
-    })
-  })
+				return
+			}
+
+			next()
+		})
+	})
 }

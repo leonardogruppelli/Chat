@@ -1,18 +1,19 @@
 <template>
   <q-page
     ref="page"
-    class="chat flex column justify-end no-wrap bg-secondary"
+    class="chat flex column justify-end no-wrap bg-grey-2"
   >
     <div
       v-if="loading"
       class="column col flex-center"
     >
       <q-spinner
-        color="info"
+        color="primary"
         size="5em"
         :thickness="1"
       />
     </div>
+
     <div
       v-else
       class="q-pa-md"
@@ -29,6 +30,7 @@
           sent
           text-sanitize
         />
+
         <q-chat-message
           v-else
           avatar="https://cdn.quasar.dev/img/avatar5.jpg"
@@ -47,20 +49,19 @@
       </q-chat-message>
     </div>
 
-    <q-footer class="q-pa-md">
+    <q-footer class="bg-grey-2 q-pa-md">
       <q-form @submit="send">
         <q-input
           v-model="message"
           placeholder="Type a message..."
-          bg-color="primary"
           rounded
           outlined
         >
           <template v-slot:append>
             <q-btn
               @click="send"
-              icon="ti-location-arrow"
-              color="white"
+              icon="las la-paper-plane"
+              color="primary"
               round
               flat
             />
@@ -210,7 +211,13 @@ export default {
 				}
 			}
 		} catch (error) {
-			console.log(error)
+			this.$q.notify({
+				color: 'negative',
+				textColor: 'white',
+				message: error.response,
+				position: 'top',
+				timeout: 5000
+			})
 		} finally {
 			this.loading = false
 		}

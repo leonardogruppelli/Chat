@@ -7,33 +7,22 @@ export default () => {
 	const Store = new Vuex.Store({
 		state: {
 			user: [
-			],
-			logged: false
+			]
 		},
 		mutations: {
-			login(state, user) {
+			set_user(state, user) {
 				state.user = user
-				state.logged = true
-			},
-			logout(state) {
-				state.user = [
-				]
-				state.logged = false
 			}
 		},
 		actions: {
-			LOGIN({ commit }, user) {
-				commit('login', user)
-			},
-			LOGOUT({ commit }) {
-				commit('logout')
+			SET_USER({ commit }, user) {
+				commit('set_user', user)
 			}
 		},
 		getters: {
 			user: state => state.user,
-			id: state => state.user._id,
-			name: state => state.user.name,
-			logged: state => state.logged
+			id: state => state.user.id,
+			name: state => state.user.name
 		}
 	})
 
