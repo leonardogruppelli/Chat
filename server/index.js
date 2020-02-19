@@ -138,33 +138,27 @@ app.post('/users', middleware, (req, res) => {
 app.post('/room', middleware, (req, res) => {
 	const query = {
 		where: {
-			$or: [
-				{
-					$and: [
-						{
-							to: ObjectId(req.body.to)
-						},
-						{
-							from: ObjectId(req.body.from)
+			users: {
+				$all: [
+					{
+						$elemMatch: {
+							$eq: ObjectId(req.body.to)
 						}
-					]
-				},
-				{
-					$and: [
-						{
-							to: ObjectId(req.body.from)
-						},
-						{
-							from: ObjectId(req.body.to)
+					},
+					{
+						$elemMatch: {
+							$eq: ObjectId(req.body.from)
 						}
-					]
-				}
-			]
+					}
+				]
+			}
 		},
 		set: {
 			$setOnInsert: {
-				to: ObjectId(req.body.to),
-				from: ObjectId(req.body.from)
+				users: [
+					ObjectId(req.body.to),
+					ObjectId(req.body.from)
+				]
 			}
 		},
 		options: {
@@ -191,6 +185,46 @@ app.post('/room', middleware, (req, res) => {
 			})
 		}
 	})
+})
+
+app.post('/recent', middleware, (req, res) => {
+	try {
+		const query = {
+			where: [
+				{
+					$match: {
+						users: ObjectId(req.body.id)
+					}
+				},
+				{
+					$sort: { 
+						'messages.at': -1
+					}
+				},
+				{ 
+					$limit : 5
+				},
+				{
+					$lookup: {
+						from: 'users',
+						localField: 'users',
+						foreignField: '_id',
+						as: 'users'
+					}
+				}
+			]
+		}
+  
+		const recent = require('./models/rooms').recent
+  
+		const db = client.db(database)
+  
+		recent(db, query, conversations => {
+			res.status(200).send(conversations)
+		})
+	} catch (error) {
+		console.log(error)
+	}
 })
 
 io.on('connection', socket => {

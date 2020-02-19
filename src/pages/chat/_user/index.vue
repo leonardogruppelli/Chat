@@ -14,40 +14,40 @@
       />
     </div>
 
-    <div
-      v-else
-      class="q-pa-md"
-    >
-      <div
-        v-for="item in messages"
-        :key="item._id"
-        class="chat__message"
+    <q-scroll-area v-else>
+      <q-list
+        class="q-px-md"
       >
-        <q-chat-message
-          v-if="sent(item.from)"
-          :text="item.message"
-          :stamp="item.at"
-          sent
-          text-sanitize
-        />
+        <div
+          v-for="item in messages"
+          :key="item._id"
+          class="chat__message"
+        >
+          <q-chat-message
+            v-if="sent(item.from)"
+            :text="item.message"
+            :stamp="stamp(item.at)"
+            sent
+            text-sanitize
+          />
+
+          <q-chat-message
+            v-else
+            avatar="https://cdn.quasar.dev/img/avatar5.jpg"
+            :text="item.message"
+            :stamp="stamp(item.at)"
+            text-sanitize
+          />
+        </div>
 
         <q-chat-message
-          v-else
+          v-if="receiving"
           avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-          :text="item.message"
-          :stamp="item.at"
-          text-sanitize
-        />
-      </div>
-
-      <q-chat-message
-        v-if="receiving"
-        avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-        text-sanitize
-      >
-        <q-spinner-dots />
-      </q-chat-message>
-    </div>
+        >
+          <q-spinner-dots />
+        </q-chat-message>
+      </q-list>
+    </q-scroll-area>
 
     <q-footer class="bg-grey-2 q-pa-md">
       <q-form @submit="send">
@@ -126,6 +126,8 @@ export default {
 				],
 				at: this.time()
 			}
+      
+			console.log(this.time())
 
 			const total = this.messages.length - 1
 			const last = this.messages[total]
@@ -142,38 +144,65 @@ export default {
 			this.message = null
 		},
 		time() {
-			const time = new Date()
+			const date = new Date()
 
-			const hours = time.getHours()
-			const minutes = time.getMinutes()
+			const day = date.getDate()
+			const month = date.getMonth() + 1
+			const year = date.getFullYear()
+    
+			const hours = date.getHours()
+			const minutes = date.getMinutes()
 
-			return `${hours < 10 ? '0' + hours : hours}:${
-				minutes < 10 ? '0' + minutes : minutes
-			}`
+			return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`
 		},
 		difference(last, current) {
-			const time = {
+			const MS = 1000 * 60 * 60 * 24
+
+			last = last.split(' ')
+			const last_date = last[0].split('/')
+			const last_time = last[1].split(':')
+
+			current = current.split(' ')
+			const current_date = current[0].split('/')
+			const current_time = current[1].split(':')
+
+			const dates = {
 				one: {
-					hours: +last.split(':')[0],
-					minutes: +last.split(':')[1]
+					day: +last_date[0],
+					month: +last_date[1],
+					year: +last_date[2],
+					hours: +last_time[0],
+					minutes: +last_time[1]
 				},
 				two: {
-					hours: +current.split(':')[0],
-					minutes: +current.split(':')[1]
+					day: +current_date[0],
+					month: +current_date[1],
+					year: +current_date[2],
+					hours: +current_time[0],
+					minutes: +current_time[1]
 				}
 			}
 
 			const date = {
-				one: new Date(0, 0, 0, time.one.hours, time.one.minutes),
-				two: new Date(0, 0, 0, time.two.hours, time.two.minutes)
+				one: new Date(dates.one.year, dates.one.month, dates.one.day, dates.one.hours, dates.one.minutes),
+				two: new Date(dates.two.year, dates.two.month, dates.two.day, dates.two.hours, dates.two.minutes)
 			}
 
+			const days = Math.floor((date.two - date.one) / MS)
+
+			if (days >= 1) {
+				return days
+			}
+      
 			const difference = (date.one.getTime() - date.two.getTime()) / 1000 / 60
 
 			return Math.abs(Math.round(difference))
 		},
 		sent(from) {
 			return from == this.name
+		},
+		stamp(date) {
+			return date.split(' ')[1]
 		},
 		scroll(old) {
 			const target = getScrollTarget(this.$refs.page.$el)
@@ -253,9 +282,5 @@ export default {
 	activated() {
 		this.scroll()
 	}
-	// destroyed() {
-	//   console.log('component destroyed')
-	//   this.$socket.off('message')
-	// }
 }
 </script>

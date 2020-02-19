@@ -44,12 +44,6 @@
               >
                 {{ user.email }}
               </q-item-label>
-              <q-item-label
-                caption
-                lines="1"
-              >
-                {{ user.id }}
-              </q-item-label>
             </q-item-section>
           </q-item>
         </q-toolbar-title>
@@ -69,7 +63,6 @@
       
     <q-scroll-area
       v-else
-      style="height: 100%"
     >
       <q-list
         class="q-gutter-y-sm q-px-md"
@@ -102,21 +95,35 @@
             <q-item-label class="text-weight-medium">
               {{ user.name }}
             </q-item-label>
+
             <q-item-label
+              v-if="user.last"
               caption
               lines="2"
             >
-              Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+              {{ user.last }}
+            </q-item-label>
+
+            <q-item-label
+              v-else
+              caption
+              lines="1"
+            >
+              {{ user.email }}
             </q-item-label>
           </q-item-section>
 
           <q-item-section
             side
-            top
           >
-            <q-item-label caption>
+            <!-- <q-item-label caption>
               5 min ago
-            </q-item-label>
+            </q-item-label> -->
+            
+            <span
+              class="user__status"
+              :class="color(user.online)"
+            />
           </q-item-section>
         </q-item>
       </q-list>
@@ -144,12 +151,11 @@ export default {
 		...mapGetters([
 			'id',
 			'user'
-		]),
-		online() {
-			return this.users.filter(item => item.online)
-		},
-		offline() {
-			return this.users.filter(item => !item.online)
+		])
+	},
+	methods: {
+		color(online) {
+			return online ? 'bg-green' : 'bg-grey'
 		}
 	},
 	async created() {

@@ -34,5 +34,20 @@ module.exports = {
 
 			callback(null)
 		}
+	},
+	recent: async(database, query, callback) => {
+		const collection = database.collection('rooms')
+
+		try {
+			const conversations = await collection.aggregate(
+				query.where
+			).toArray()
+
+			callback(conversations ? conversations : null)
+		} catch (error) {
+			assert.equal(error, null)
+
+			callback(null)
+		}
 	}
 }

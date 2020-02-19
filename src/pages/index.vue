@@ -3,12 +3,10 @@
     <info>
       <q-toolbar class="text-white q-px-md">
         <q-space />
-
-        {{ name }}
       
         <q-avatar
-          size="40px"
-          class="q-ml-md"
+          size="50px"
+          class="q-mb-xs"
         >
           <img src="https://cdn.quasar.dev/img/boy-avatar.png">
         </q-avatar>
@@ -58,6 +56,7 @@
         </q-card>
       </div>
     </info>
+
     <recent />
   </q-page>
 </template>
