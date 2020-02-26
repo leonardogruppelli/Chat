@@ -115,7 +115,7 @@ export default {
 
 					this.$socket.emit('join', data.user.id)
 
-					this.reset()
+					this.$refs.observer.reset()
             
 					this.$router.push('/')
 				} else {

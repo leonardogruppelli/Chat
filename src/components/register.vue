@@ -141,7 +141,7 @@ export default {
 				)
 
 				if (data) {
-					this.reset()
+					this.$refs.observer.reset()
 
 					this.$q.notify({
 						color: 'positive',
