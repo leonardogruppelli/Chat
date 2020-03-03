@@ -1,5 +1,5 @@
 <template>
-  <q-page class="auth flex column justify-center bg-secondary">
+  <q-page class="auth flex column justify-center">
     <q-tab-panels
       v-model="tab"
       animated
@@ -10,7 +10,7 @@
     >
       <q-tab-panel
         name="login"
-        class="q-px-lg bg-secondary"
+        class="q-px-lg"
       >
         <div class="text-center">
           <q-img

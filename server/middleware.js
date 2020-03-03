@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 
-const secret = process.env.SECRET
+const secret = process.env.SECRET || 'bWVyb2xtdXNwaQ=='
 
 module.exports = {
 	validate: (req, res, next) => {

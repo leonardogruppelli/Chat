@@ -14,7 +14,10 @@
       />
     </div>
 
-    <q-scroll-area v-else>
+    <q-scroll-area
+      class="q-scrollarea--chat"
+      v-else
+    >
       <q-list
         class="q-px-md"
       >
@@ -86,8 +89,7 @@ export default {
 			message: null,
 			typing: false,
 			receiving: false,
-			messages: [
-			],
+			messages: [],
 			loading: true
 		}
 	},

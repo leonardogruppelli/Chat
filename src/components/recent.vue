@@ -4,7 +4,7 @@
       Recent conversations
     </p>
 
-    <div
+    <!-- <div
       v-if="loading"
       class="column col flex-center"
     >
@@ -64,9 +64,9 @@
         <q-item-section
           side
         >
-          <!-- <q-item-label caption>
-              5 min ago
-            </q-item-label> -->
+          <q-item-label caption>
+            {{ room.last }}
+          </q-item-label>
             
           <span
             class="user__status"
@@ -74,7 +74,7 @@
           />
         </q-item-section>
       </q-item>
-    </q-list>
+    </q-list> -->
   </div>
 </template>
 
@@ -89,8 +89,7 @@ export default {
 	},
 	data() {
 		return {
-			recent: [
-			],
+			recent: [],
 			loading: true
 		}
 	},

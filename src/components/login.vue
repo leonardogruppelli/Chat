@@ -17,7 +17,7 @@
           >
             <template v-slot:prepend>
               <q-icon
-                name="ti-email"
+                name="las la-at"
                 size="xs"
                 color="info"
               />
@@ -39,7 +39,7 @@
           >
             <template v-slot:prepend>
               <q-icon
-                name="ti-lock"
+                name="las la-key"
                 size="xs"
                 color="info"
               />

@@ -39,7 +39,9 @@ module.exports = {
     "no-undef": 0,
     "array-bracket-newline": [
       "error",
-      "always"
+      {
+        minItems: 1
+      }
     ],
     "array-element-newline": [
       "error",
