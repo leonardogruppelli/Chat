@@ -77,6 +77,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -93,32 +94,48 @@ export default {
 			loading: false
 		}
 	},
+	computed: mapGetters([
+		'user_app'
+	]),
 	methods: {
 		async login() {
 			this.loading = true
 
 			try {
-				const { data } = await axios.post(
-					`${process.env.HOST}/login`,
-					this.form
-				)
-
-				if (data) {
-					console.log(data)
-					// this.$q.cookies.set('user', data.user, {
-					// 	expires: '1d'
-					// })
-        
+				const { data: response } = await axios.post('/login', this.form)
+				
+				if (response) {
+					const token = response.token
+					const user = {
+						id: response.id,
+						name: response.full_name,
+						email: response.email,
+						identifier: response.identifier
+					}
           
-					// this.$q.cookies.set('token', data.token, {
-					// 	expires: '1d'
-					// })
+					axios.defaults.headers.common = {
+						'Authorization': `Bearer ${token}`
+					}
+          
+					alert(this.user_app)
+
+					const { data: update } = await axios.put(`/user/${user.id}`, {
+						user_app: this.user_app
+					})
+          
+					this.$q.cookies.set('token', token, {
+						expires: '1d'
+					})
+          
+					this.$q.cookies.set('user', user, {
+						expires: '1d'
+					})
 
 					// this.$socket.emit('join', data.user.id)
 
-					// this.$refs.observer.reset()
+					this.$refs.observer.reset()
             
-					// this.$router.push('/')
+					this.$router.push('/')
 				} else {
 					this.$q.notify({
 						color: 'negative',
@@ -129,10 +146,11 @@ export default {
 					})
 				}
 			} catch (error) {
+				alert(error)
 				this.$q.notify({
 					color: 'negative',
 					textColor: 'white',
-					message: error.response,
+					message: error,
 					position: 'top',
 					timeout: 5000
 				})

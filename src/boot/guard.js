@@ -11,8 +11,7 @@ export default ({ router, store }) => {
 				'Authorization': `Bearer ${token}`
 			}
 
-			store.dispatch('SET_USER', user || [
-			])
+			store.dispatch('SET_USER', user || [])
 			
 			if (!token && route.path != '/auth') {
 				next({

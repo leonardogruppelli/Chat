@@ -9,13 +9,35 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
 	computed: {
 		...mapGetters([
-			'id'
+			'id',
+			'user_app'
 		])
 	},
+	created () {
+		document.addEventListener('deviceready', () => {
+			window.plugins.OneSignal.setLogLevel({logLevel: 6, visualLevel: 0})
+			
+			const onUserInformation = (data) => {
+				this.SET_USER_APP(data.userId)
+			}
+  
+			const onNotificationOpened = (data) => {
+				console.log('notification opened: ', JSON.stringify(data))
+			}
+    
+			window.plugins.OneSignal.startInit('df24bc31-f78d-4fa0-87ec-ae85b91c7538')
+			window.plugins.OneSignal.getIds(onUserInformation)
+			window.plugins.OneSignal.handleNotificationOpened(onNotificationOpened)
+			window.plugins.OneSignal.endInit()
+		}, false)
+	},
+	methods: mapActions([
+		'SET_USER_APP'
+	])
 }
 </script>
