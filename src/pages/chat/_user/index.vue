@@ -104,7 +104,7 @@ export default {
 			this.typing = !!this.message
 		},
 		typing() {
-			this.$socket.emit('typing', this.user, this.id, this.typing)
+			// this.$socket.emit('typing', this.user, this.id, this.typing)
 		},
 		messages: {
 			handler(value, old) {
@@ -142,7 +142,7 @@ export default {
 				message.append = last._id
 			}
 
-			this.$socket.emit('message', this.room, message)
+			// this.$socket.emit('message', this.room, message)
 			this.message = null
 		},
 		time() {

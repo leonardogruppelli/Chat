@@ -35,6 +35,7 @@ module.exports = {
       "error",
       "never"
     ],
+    "no-prototype-builtins": 0,
     "no-unused-vars": 0,
     "no-undef": 0,
     "array-bracket-newline": [

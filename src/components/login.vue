@@ -105,19 +105,20 @@ export default {
 
 				if (data) {
 					console.log(data)
-					this.$q.cookies.set('user', data.user, {
-						expires: '1d'
-					})
+					// this.$q.cookies.set('user', data.user, {
+					// 	expires: '1d'
+					// })
+        
           
-					this.$q.cookies.set('token', data.token, {
-						expires: '1d'
-					})
+					// this.$q.cookies.set('token', data.token, {
+					// 	expires: '1d'
+					// })
 
-					this.$socket.emit('join', data.user.id)
+					// this.$socket.emit('join', data.user.id)
 
-					this.$refs.observer.reset()
+					// this.$refs.observer.reset()
             
-					this.$router.push('/')
+					// this.$router.push('/')
 				} else {
 					this.$q.notify({
 						color: 'negative',

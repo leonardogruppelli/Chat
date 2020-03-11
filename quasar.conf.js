@@ -1,8 +1,9 @@
 module.exports = function(ctx) {
 	return {
 		boot: [
+			'axios',
 			'guard',
-			'socket',
+			// 'socket',
 			'validation'
 		],
 
@@ -19,10 +20,8 @@ module.exports = function(ctx) {
 			iconSet: 'line-awesome',
 			lang: 'en-us',
 			all: 'auto',
-			components: [
-			],
-			directives: [
-			],
+			components: [],
+			directives: [],
 			plugins: [
 				'Cookies',
 				'Notify'
@@ -46,8 +45,7 @@ module.exports = function(ctx) {
 			open: true
 		},
 
-		animations: [
-		],
+		animations: [],
 
 		ssr: {
 			pwa: false

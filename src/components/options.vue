@@ -100,7 +100,7 @@ export default {
 			this.$q.cookies.remove('user')
 			this.$q.cookies.remove('token')
       
-			this.$socket.emit('left')
+			// this.$socket.emit('left')
 			this.$router.push('/auth')
 		}
 	}
