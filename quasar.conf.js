@@ -13,7 +13,9 @@ module.exports = function(ctx) {
 
 		extras: [
 			'roboto-font',
-			'line-awesome'
+			'line-awesome',
+			'material-icons',
+			'material-icons-outlined'
 		],
 
 		framework: {

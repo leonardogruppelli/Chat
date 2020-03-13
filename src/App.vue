@@ -27,7 +27,10 @@ export default {
 			}
   
 			const onNotificationOpened = (data) => {
-				console.log('notification opened: ', JSON.stringify(data))
+				if (data.notification.payload.additionalData.route) {
+					const route = data.notification.payload.additionalData.route
+					this.$router.push(route)
+				}
 			}
     
 			window.plugins.OneSignal.startInit('df24bc31-f78d-4fa0-87ec-ae85b91c7538')

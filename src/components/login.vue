@@ -78,7 +78,6 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import { mapGetters } from 'vuex'
-import axios from 'axios'
 
 export default {
 	components: {
@@ -102,7 +101,7 @@ export default {
 			this.loading = true
 
 			try {
-				const { data: response } = await axios.post('/login', this.form)
+				const { data: response } = await this.$post('/login', this.form)
 				
 				if (response) {
 					const token = response.token
@@ -113,13 +112,9 @@ export default {
 						identifier: response.identifier
 					}
           
-					axios.defaults.headers.common = {
-						'Authorization': `Bearer ${token}`
-					}
-          
-					alert(this.user_app)
+					this.$setToken(token)
 
-					const { data: update } = await axios.put(`/user/${user.id}`, {
+					const { data: update } = await this.$put(`/user/${user.id}`, {
 						user_app: this.user_app
 					})
           

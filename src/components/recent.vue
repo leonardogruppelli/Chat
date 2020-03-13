@@ -79,14 +79,14 @@
 </template>
 
 <script>
-import Background from 'components/background'
+// import Background from 'components/background'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
-	components: {
-		Background,
-	},
+	// components: {
+	// 	Background,
+	// },
 	data() {
 		return {
 			recent: [],

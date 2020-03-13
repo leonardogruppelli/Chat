@@ -6,70 +6,32 @@
       
         <q-avatar
           size="50px"
-          class="q-mb-xs"
+          class="q-my-md"
         >
           <img src="https://cdn.quasar.dev/img/boy-avatar.png">
         </q-avatar>
       </q-toolbar>
-
-      <div class="row q-gutter-x-md q-my-sm q-px-md">
-        <q-card class="col bg-white">
-          <q-card-section class="col text-center">
-            <q-avatar
-              size="60px"
-              color="primary"
-              text-color="white"
-              icon="las la-envelope"
-            >
-              <q-badge
-                color="red"
-                floating
-              >
-                12
-              </q-badge>
-            </q-avatar>
-            <div class="text-overline text-primary q-mt-sm">
-              messages
-            </div>
-          </q-card-section>
-        </q-card>
-
-        <q-card class="col bg-white">
-          <q-card-section class="col text-center">
-            <q-avatar
-              size="60px"
-              color="warning"
-              text-color="white"
-              icon="las la-exclamation"
-            >
-              <q-badge
-                color="red"
-                floating
-              >
-                0
-              </q-badge>
-            </q-avatar>
-            <div class="text-overline text-warning q-mt-sm">
-              occurrences
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
     </info>
 
-    <recent />
+    <communications class="q-mb-md" />
+
+    <q-separator />
+
+    <notifications class="q-mt-lg" />
   </q-page>
 </template>
 
 <script>
 import Info from 'components/info'
-import Recent from 'components/recent'
+import Communications from 'components/communications'
+import Notifications from 'components/notifications'
 import { mapGetters } from 'vuex'
 
 export default {
 	components: {
 		Info,
-		Recent
+		Communications,
+		Notifications
 	},
 	computed: {
 		...mapGetters([

@@ -31,15 +31,3 @@
     </svg>
   </div>
 </template>
-
-<script>
-export default {
-	mounted () {
-		const circles = document.getElementsByTagName('circle')
-
-		for (const circle of circles) {
-			circle.style.animationDelay = Math.random() * 3 + 1 + 's'
-		}
-	},
-}
-</script>

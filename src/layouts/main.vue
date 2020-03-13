@@ -134,12 +134,12 @@
           exact
         >
           <q-icon
-            name="las la-home"
+            name="home"
             size="md"
           />
         </q-route-tab>
 
-        <q-route-tab
+        <!-- <q-route-tab
           to="/users"
           exact
         >
@@ -157,7 +157,7 @@
             name="las la-user"
             size="md"
           />
-        </q-route-tab>
+        </q-route-tab> -->
       </q-tabs>
     </q-footer>
   </q-layout>
