@@ -4,60 +4,62 @@
       Notifications
     </p>
 
-    <div
-      v-if="loading"
-      class="column col flex-center"
-    >
-      <q-spinner
-        color="primary"
-        size="5em"
-        :thickness="1"
-      />
-    </div>
-
-    <q-list v-else-if="!loading && !notifications.length">
-      <p class="text-grey">
-        no notifications found...
-      </p>
-    </q-list>
-    
-    <q-list v-else>
-      <q-item
-        v-for="notification in notifications"
-        :key="notification.id"
-        :to="{
-          path: `/notification/${notification.id}`,
-          exact: true
-        }"
-        clickable
-        v-ripple
-        class="q-px-none"
+    <q-pull-to-refresh @refresh="refresh">
+      <div
+        v-if="loading"
+        class="column col flex-center"
       >
-        <q-item-section>
-          <q-item-label class="text-weight-medium">
-            {{ notification.title }}
-          </q-item-label>
+        <q-spinner
+          color="primary"
+          size="5em"
+          :thickness="1"
+        />
+      </div>
 
-          <q-item-label
-            caption
-            lines="2"
-          >
-            {{ notification.description }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section
-          side
-          top
+      <q-list v-else-if="!loading && !notifications.length">
+        <p class="text-grey">
+          no notifications found...
+        </p>
+      </q-list>
+      
+      <q-list v-else>
+        <q-item
+          v-for="notification in notifications"
+          :key="notification.id"
+          :to="{
+            path: `/notification/${notification.id}`,
+            exact: true
+          }"
+          clickable
+          v-ripple
+          class="q-px-none"
         >
-          <q-icon
-            name="notifications"
-            size="sm"
-            color="primary"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">
+              {{ notification.title }}
+            </q-item-label>
+
+            <q-item-label
+              caption
+              lines="2"
+            >
+              {{ notification.description }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section
+            side
+            top
+          >
+            <q-icon
+              name="notifications"
+              size="sm"
+              color="primary"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-pull-to-refresh>
   </div>
 </template>
 
@@ -90,6 +92,15 @@ export default {
 			})
 		} finally {
 			this.loading = false
+		}
+	},
+	methods: {
+		async refresh(done) {
+			const { data } = await this.$get('/notifications')
+
+			this.notifications = data
+      
+			done()
 		}
 	}
 }

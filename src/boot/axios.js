@@ -1,10 +1,7 @@
-import { Platform } from 'quasar'
 import axios from 'axios'
 
 export default ({ Vue }) => {
-	const url = Platform.is.cordova
-		? process.env.API || 'http://10.0.2.2:3333/api/v2'
-		: 'http://localhost:3333/api/v2'
+	const url = 'https://callmai-admin.herokuapp.com/api/v2'
 
 	Vue.prototype.$get = async (endpoint) => {
 		try {

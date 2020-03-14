@@ -4,60 +4,62 @@
       Communications
     </p>
 
-    <div
-      v-if="loading"
-      class="column col flex-center"
-    >
-      <q-spinner
-        color="primary"
-        size="5em"
-        :thickness="1"
-      />
-    </div>
-
-    <q-list v-else-if="!loading && !communications.length">
-      <p class="text-grey">
-        no communications found...
-      </p>
-    </q-list>
-    
-    <q-list v-else>
-      <q-item
-        v-for="communication in communications"
-        :key="communication.id"
-        :to="{
-          path: `/communication/${communication.id}`,
-          exact: true
-        }"
-        clickable
-        v-ripple
-        class="q-px-none"
+    <q-pull-to-refresh @refresh="refresh">
+      <div
+        v-if="loading"
+        class="column col flex-center"
       >
-        <q-item-section>
-          <q-item-label class="text-weight-medium">
-            {{ communication.title }}
-          </q-item-label>
+        <q-spinner
+          color="primary"
+          size="5em"
+          :thickness="1"
+        />
+      </div>
 
-          <q-item-label
-            caption
-            lines="2"
-          >
-            {{ communication.description }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section
-          side
-          top
+      <q-list v-else-if="!loading && !communications.length">
+        <p class="text-grey">
+          no communications found...
+        </p>
+      </q-list>
+      
+      <q-list v-else>
+        <q-item
+          v-for="communication in communications"
+          :key="communication.id"
+          :to="{
+            path: `/communication/${communication.id}`,
+            exact: true
+          }"
+          clickable
+          v-ripple
+          class="q-px-none"
         >
-          <q-icon
-            name="notifications"
-            size="sm"
-            color="orange"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">
+              {{ communication.title }}
+            </q-item-label>
+
+            <q-item-label
+              caption
+              lines="2"
+            >
+              {{ communication.description }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section
+            side
+            top
+          >
+            <q-icon
+              name="notifications"
+              size="sm"
+              color="orange"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-pull-to-refresh>
   </div>
 </template>
 
@@ -90,6 +92,15 @@ export default {
 			})
 		} finally {
 			this.loading = false
+		}
+	},
+	methods: {
+		async refresh(done) {
+			const { data } = await this.$get('/communications')
+
+			this.communications = data
+      
+			done()
 		}
 	}
 }

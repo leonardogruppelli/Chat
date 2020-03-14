@@ -37,3 +37,6 @@ yarn-error.log*
 # Database files
 server/database/*
 !server/database/.gitkeep
+
+# Key files
+quasar-release-key.keystore
