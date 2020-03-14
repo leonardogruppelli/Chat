@@ -26,15 +26,11 @@
       </p>
     </div>
 
-    <q-footer class="communication__footer bg-grey-2 q-pa-md">
-      <div
-        v-if="communication.confirms"
-        class="flex justify-between"
-      >
-        <q-btn
-          label="Refuse"
-          color="accent"
-        />
+    <q-footer
+      v-if="communication.confirms && !confirmed"
+      class="communication__footer bg-grey-2 q-pa-md"
+    >
+      <div class="flex justify-end">
         <q-btn
           @click="accept"
           label="Accept"
@@ -57,6 +53,11 @@ export default {
 			},
 			loading: false,
 			accepting: false
+		}
+	},
+	computed: {
+		confirmed() {
+			return this.communication.users && !!this.communication.users[0].pivot.confirmed
 		}
 	},
 	async created () {

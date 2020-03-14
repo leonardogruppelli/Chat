@@ -52,9 +52,9 @@
             top
           >
             <q-icon
-              name="notifications"
+              :name="notification.users[0].pivot.confirmed | outlined"
               size="sm"
-              color="primary"
+              :color="notification.users[0].pivot.confirmed | answered"
             />
           </q-item-section>
         </q-item>
@@ -76,6 +76,14 @@ export default {
 	computed: mapGetters([
 		'id' 
 	]),
+	filters: {
+		outlined: (value) => {
+			return value ? 'o_notifications' : 'notifications'
+		},
+		answered: (value) => {
+			return value ? 'grey' : 'primary'
+		}
+	},
 	async created () {
 		try {
 			const { data } = await this.$get('/notifications')

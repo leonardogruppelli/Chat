@@ -3,13 +3,56 @@
     <info>
       <q-toolbar class="text-white q-px-md">
         <q-space />
-      
-        <q-avatar
-          size="50px"
-          class="q-my-md"
+        <q-btn
+          flat
+          dense
         >
-          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-        </q-avatar>
+          <q-avatar
+            size="50px"
+            class="q-my-md"
+          >
+            <img src="statics/user.png">
+          </q-avatar>
+
+          <q-menu>
+            <div class="flex q-pa-md text-no-wrap">
+              <q-avatar
+                size="60px"
+                class="q-mt-xs"
+              >
+                <img src="statics/user.png">
+              </q-avatar>
+            
+              <q-separator
+                vertical
+                inset
+                class="q-mx-lg"
+              />
+
+              <div class="column">
+                <div class="text-subtitle1 q-mb-none">
+                  {{ user.name }}
+                </div>
+                <div class="text-caption q-mb-md">
+                  {{ user.email }}
+                </div>
+
+                <div class="flex justify-end">
+                  <q-btn
+                    @click="logout"
+                    color="red"
+                    icon="exit_to_app"
+                    round
+                    push
+                    size="sm"
+                    class="q-pa-xs"
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </info>
 
@@ -35,8 +78,17 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'name'
+			'user'
 		])
+	},
+	methods: {
+		logout() {
+			this.$q.cookies.remove('user')
+			this.$q.cookies.remove('token')
+      
+			// this.$socket.emit('left')
+			this.$router.push('/auth')
+		}
 	}
 }
 </script>

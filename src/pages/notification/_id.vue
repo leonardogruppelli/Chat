@@ -27,18 +27,23 @@
     </div>
 
     <q-input
+      v-if="!loading"
       v-model="form.answer"
       label="answer"
       filled
       rounded
       type="textarea"
+      :readonly="answered"
     >
       <template v-slot:prepend>
         <q-icon name="comment" />
       </template>
     </q-input>
 
-    <q-footer class="communication__footer bg-grey-2 q-pa-md">
+    <q-footer
+      v-if="!loading && !answered"
+      class="communication__footer bg-grey-2 q-pa-md"
+    >
       <div class="flex justify-between">
         <q-btn
           @click="respond(0)"
@@ -72,16 +77,20 @@ export default {
 			refusing: false
 		}
 	},
+	computed: {
+		answered() {
+			return this.notification.users ? !!this.notification.users[0].pivot.confirmed : null
+		}
+	},
 	async created () {
 		this.loading = true
     
 		try {
 			const { data: notification } = await this.$get(`/notifications/${this.id}`)
 			const { data: readed } = await this.$put(`/notifications/${this.id}`)
-      
-			console.log(notification)
 
 			this.notification = notification
+			this.form.answer = notification.users[0].pivot.answer
 		} catch (error) {
 			alert(error)
 			console.log(error)

@@ -52,9 +52,9 @@
             top
           >
             <q-icon
-              name="notifications"
+              :name="communication | outlined"
               size="sm"
-              color="orange"
+              :color="communication | readed"
             />
           </q-item-section>
         </q-item>
@@ -76,6 +76,22 @@ export default {
 	computed: mapGetters([
 		'id' 
 	]),
+	filters: {
+		outlined: (value) => {
+			if (value.confirms) {
+				return value.users[0].pivot.confirmed ? 'o_notifications' : 'notifications'
+			}
+      
+			return value ? 'o_notifications' : 'notifications'
+		},
+		readed: (value) => {
+			if (value.confirms) {
+				return value.users[0].pivot.confirmed ? 'grey' : 'orange'
+			}
+      
+			return value ? 'grey' : 'orange'
+		}
+	},
 	async created () {
 		try {
 			const { data } = await this.$get('/communications')

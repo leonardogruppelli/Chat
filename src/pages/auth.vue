@@ -1,28 +1,29 @@
 <template>
   <q-page class="auth flex column justify-center">
-    <q-tab-panels
+    <!-- <q-tab-panels
       v-model="tab"
       animated
       swipeable
       transition-prev="jump-right"
       transition-next="jump-left"
       class="auth__panel"
-    >
-      <q-tab-panel
+    > -->
+    <!-- <q-tab-panel
         name="login"
         class="q-px-lg"
-      >
-        <div class="text-center">
-          <q-img
-            class="auth__logo"
-            src="statics/logo.png"
-            spinner-color="white"
-          />
-        </div>
-        <login />
-      </q-tab-panel>
+      > -->
+    <div class="auth__logo bg-grey-10">
+      <q-img
+        class="auth__logo__image"
+        src="statics/logo.png"
+        spinner-color="white"
+      />
+    </div>
 
-      <q-tab-panel
+    <login class="auth__content q-pa-lg" />
+    <!-- </q-tab-panel> -->
+
+    <!-- <q-tab-panel
         name="register"
         class="q-py-xl q-px-lg"
       >
@@ -34,10 +35,10 @@
           />
         </div>
         <register @registered="tab = 'login'" />
-      </q-tab-panel>
-    </q-tab-panels>
+      </q-tab-panel> -->
+    <!-- </q-tab-panels> -->
 
-    <p
+    <!-- <p
       v-if="tab == 'login'"
       class="auth__tab text-accent text-weight-light self-center"
     >
@@ -67,23 +68,18 @@
         flat
         class="q-pa-none text-weight-normal"
       />
-    </p>
+    </p> -->
   </q-page>
 </template>
 
 <script>
 import Login from 'components/login'
-import Register from 'components/register'
+// import Register from 'components/register'
 
 export default {
 	components: {
 		Login,
-		Register
-	},
-	data() {
-		return {
-			tab: 'login'
-		}
+		// Register
 	}
 }
 </script>

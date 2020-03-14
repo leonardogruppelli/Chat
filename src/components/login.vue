@@ -1,5 +1,9 @@
 <template>
   <div>
+    <h4 class="q-my-md">
+      Login
+    </h4>
+
     <validation-observer
       ref="observer"
       v-slot="{ passes }"
@@ -49,11 +53,18 @@
 
         <q-btn
           type="submit"
-          color="info"
-          label="Log In"
+          color="primary"
+          round
           :loading="loading"
-          class="full-width q-pa-sm"
+          class="q-pa-md float-right"
         >
+          <template v-slot>
+            <q-icon
+              name="arrow_forward"
+              size="md"
+            />
+          </template>
+
           <template v-slot:loading>
             <q-spinner
               color="white"
@@ -64,14 +75,14 @@
       </form>
     </validation-observer>
 
-    <q-btn
+    <!-- <q-btn
       flat
       color="accent"
       label="Forgot your password?"
       :ripple="false"
       no-caps
       class="full-width q-ma-md text-weight-light"
-    />
+    /> -->
   </div>
 </template>
 
@@ -141,11 +152,10 @@ export default {
 					})
 				}
 			} catch (error) {
-				alert(error)
 				this.$q.notify({
 					color: 'negative',
 					textColor: 'white',
-					message: error,
+					message: 'invalid e-mail or password...',
 					position: 'top',
 					timeout: 5000
 				})

@@ -1,10 +1,6 @@
 <template>
   <div id="q-app">
-    <keep-alive v-if="id">
-      <router-view :key="$route.path" />
-    </keep-alive>
-
-    <router-view v-else />
+    <router-view />
   </div>
 </template>
 
@@ -14,7 +10,6 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
 	computed: {
 		...mapGetters([
-			'id',
 			'user_app'
 		])
 	},
